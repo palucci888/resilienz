@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template_string, redirect, url_for
+from flask import Flask, request, render_template_string, redirect, url_for, Response
 import sqlite3
 
 app = Flask(__name__)
@@ -67,9 +67,22 @@ def danke():
         <p>Sie werden in wenigen Sekunden zur Startseite zurückgeleitet.</p>
         <a href="https://palucci888.github.io/resilienz/">Zurück zur Startseite</a>
     """)
-    
+
+# --- Passwortschutz für die Anmeldeliste ---
+def check_auth(username, password):
+    return username == 'admin' and password == 'dein-passwort123'  # <--- HIER ANPASSEN
+
+def authenticate():
+    return Response(
+        'Login erforderlich!', 401,
+        {'WWW-Authenticate': 'Basic realm="Login Required"'}
+    )
+
 @app.route('/anmeldungen', methods=['GET'])
 def anmeldungen():
+    auth = request.authorization
+    if not auth or not check_auth(auth.username, auth.password):
+        return authenticate()
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM anmeldungen')
@@ -92,6 +105,6 @@ def anmeldungen():
         </table>
         <a href="/">Zurück zur Startseite</a>
     """, rows=rows)
-    
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
