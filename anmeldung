@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Anmeldung – Resilienztraining</title>
+</head>
+<body>
+
+<h2>Anmeldeformular</h2>
+<form action="/submit" method="post">
+  <label for="name">Name:</label><br>
+  <input type="text" id="name" name="name" required><br><br>
+
+  <label for="alter">Alter:</label><br>
+  <input type="number" id="alter" name="alter" required><br><br>
+
+  <label for="problemtyp">Problemtyp (z. B. Schulstress, Konflikte, Ängste):</label><br>
+  <input type="text" id="problemtyp" name="problemtyp"><br><br>
+
+  <label for="kontakt">Erreichbarkeit (E-Mail oder Telefonnummer):</label><br>
+  <input type="text" id="kontakt" name="kontakt" required><br><br>
+
+  <input type="submit" value="Anmelden">
+</form>
+
+<p><strong>Hinweis:</strong> Die ersten 10 Anmeldungen erhalten einen Rabatt!</p>
+
+</body>
+</html>
