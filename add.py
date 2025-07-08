@@ -51,8 +51,10 @@ def submit():
         ''', (name, int(alter), problemtyp, kontakt))
         conn.commit()
 
+    # Nach erfolgreicher Anmeldung immer Redirect auf Danke-Seite
     return redirect(url_for('danke'))
 
+# Danke-Seite nur für GET!
 @app.route('/danke', methods=['GET'])
 def danke():
     return render_template_string("""
