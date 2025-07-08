@@ -67,6 +67,7 @@ def danke():
         <p>Sie werden in wenigen Sekunden zur Startseite zurückgeleitet.</p>
         <a href="/">Zurück zur Startseite</a>
     """)
+    
 @app.route('/anmeldungen', methods=['GET'])
 def anmeldungen():
     with sqlite3.connect(DB_NAME) as conn:
