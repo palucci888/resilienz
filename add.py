@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template_string
+from flask import Flask, request, render_template_string, redirect, url_for
 import sqlite3
 
 app = Flask(__name__)
@@ -20,6 +20,19 @@ def init_db():
 
 init_db()
 
+@app.route('/', methods=['GET'])
+def home():
+    return render_template_string("""
+        <h2>Anmeldeformular</h2>
+        <form method="POST" action="/submit">
+            Name: <input type="text" name="name" required><br>
+            Alter: <input type="number" name="alter" required><br>
+            Problemtyp: <input type="text" name="problemtyp"><br>
+            Kontakt: <input type="text" name="kontakt" required><br>
+            <input type="submit" value="Absenden">
+        </form>
+    """)
+
 @app.route('/submit', methods=['POST'])
 def submit():
     name = request.form.get('name')
@@ -38,25 +51,15 @@ def submit():
         ''', (name, int(alter), problemtyp, kontakt))
         conn.commit()
 
+    return redirect(url_for('danke'))
+
+@app.route('/danke', methods=['GET'])
+def danke():
     return render_template_string("""
         <h2>Vielen Dank für Ihre Anmeldung!</h2>
         <p>Wir haben Ihre Daten erhalten und melden uns bald bei Ihnen.</p>
         <a href="/">Zurück zur Startseite</a>
     """)
 
-
-@app.route('/', methods=['GET'])
-def home():
-    return render_template_string("""
-        <h2>Anmeldeformular</h2>
-        <form method="POST" action="/submit">
-            Name: <input type="text" name="name" required><br>
-            Alter: <input type="number" name="alter" required><br>
-            Problemtyp: <input type="text" name="problemtyp"><br>
-            Kontakt: <input type="text" name="kontakt" required><br>
-            <input type="submit" value="Absenden">
-        </form>
-    """)
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+    app.run(host='0.0.0.0', port=10000
