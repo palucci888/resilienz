@@ -44,9 +44,19 @@ def submit():
         <a href="/">Zurück zur Startseite</a>
     """)
 
-@app.route('/')
+
+@app.route('/', methods=['GET'])
 def home():
-    return "Backend läuft!"
+    return render_template_string("""
+        <h2>Anmeldeformular</h2>
+        <form method="POST" action="/submit">
+            Name: <input type="text" name="name" required><br>
+            Alter: <input type="number" name="alter" required><br>
+            Problemtyp: <input type="text" name="problemtyp"><br>
+            Kontakt: <input type="text" name="kontakt" required><br>
+            <input type="submit" value="Absenden">
+        </form>
+    """)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
