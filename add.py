@@ -61,11 +61,11 @@ def submit_get():
 @app.route('/danke', methods=['GET'])
 def danke():
     return render_template_string("""
-        <meta http-equiv="refresh" content="4; url={{ url_for('home') }}">
+        <meta http-equiv="refresh" content="4; url=https://palucci888.github.io/resilienz/">
         <h2>Vielen Dank für Ihre Anmeldung!</h2>
         <p>Wir haben Ihre Daten erhalten und melden uns bald bei Ihnen.</p>
         <p>Sie werden in wenigen Sekunden zur Startseite zurückgeleitet.</p>
-        <a href="/">Zurück zur Startseite</a>
+        <a href="https://palucci888.github.io/resilienz/">Zurück zur Startseite</a>
     """)
     
 @app.route('/anmeldungen', methods=['GET'])
