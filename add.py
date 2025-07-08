@@ -33,8 +33,9 @@ def home():
         </form>
     """)
 
+# POST verarbeitet das Formular, GET leitet freundlich auf die Startseite um (Schutz vor Method Not Allowed)
 @app.route('/submit', methods=['POST'])
-def submit():
+def submit_post():
     name = request.form.get('name')
     alter = request.form.get('alter')
     problemtyp = request.form.get('problemtyp')
@@ -51,17 +52,8 @@ def submit():
         ''', (name, int(alter), problemtyp, kontakt))
         conn.commit()
 
-    # Nach erfolgreicher Anmeldung immer Redirect auf Danke-Seite
     return redirect(url_for('danke'))
 
-# Danke-Seite nur für GET!
-@app.route('/danke', methods=['GET'])
-def danke():
-    return render_template_string("""
-        <h2>Vielen Dank für Ihre Anmeldung!</h2>
-        <p>Wir haben Ihre Daten erhalten und melden uns bald bei Ihnen.</p>
-        <a href="/">Zurück zur Startseite</a>
-    """)
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+@app.route('/submit', methods=['GET'])
+def submit_get():
+    # Falls jemand /submit
