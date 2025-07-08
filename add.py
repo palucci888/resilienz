@@ -67,6 +67,30 @@ def danke():
         <p>Sie werden in wenigen Sekunden zur Startseite zurückgeleitet.</p>
         <a href="/">Zurück zur Startseite</a>
     """)
-
+@app.route('/anmeldungen', methods=['GET'])
+def anmeldungen():
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM anmeldungen')
+        rows = cursor.fetchall()
+    return render_template_string("""
+        <h2>Alle Anmeldungen</h2>
+        <table border="1">
+            <tr>
+                <th>ID</th><th>Name</th><th>Alter</th><th>Problemtyp</th><th>Kontakt</th>
+            </tr>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="/">Zurück zur Startseite</a>
+    """, rows=rows)
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
