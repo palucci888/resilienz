@@ -24,7 +24,7 @@ init_db()
 def home():
     return render_template_string("""
         <h2>Anmeldeformular</h2>
-        <form method="POST" action="/submit">
+        <form method="post" action="/submit">
             Name: <input type="text" name="name" required><br>
             Alter: <input type="number" name="alter" required><br>
             Problemtyp: <input type="text" name="problemtyp"><br>
@@ -33,9 +33,8 @@ def home():
         </form>
     """)
 
-# POST verarbeitet das Formular, GET leitet freundlich auf die Startseite um (Schutz vor Method Not Allowed)
 @app.route('/submit', methods=['POST'])
-def submit_post():
+def submit():
     name = request.form.get('name')
     alter = request.form.get('alter')
     problemtyp = request.form.get('problemtyp')
@@ -51,9 +50,21 @@ def submit_post():
             VALUES (?, ?, ?, ?)
         ''', (name, int(alter), problemtyp, kontakt))
         conn.commit()
-
+    # Nach erfolgreicher Anmeldung weiterleiten
     return redirect(url_for('danke'))
 
+# Diese Route fängt versehentliche GET-Anfragen auf /submit ab!
 @app.route('/submit', methods=['GET'])
 def submit_get():
-    # Falls jemand /submit
+    return redirect(url_for('home'))
+
+@app.route('/danke', methods=['GET'])
+def danke():
+    return render_template_string("""
+        <h2>Vielen Dank für Ihre Anmeldung!</h2>
+        <p>Wir haben Ihre Daten erhalten und melden uns bald bei Ihnen.</p>
+        <a href="/">Zurück zur Startseite</a>
+    """)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=10000)
