@@ -2,7 +2,6 @@ from flask import Flask, request, render_template_string
 import sqlite3
 
 app = Flask(__name__)
-
 DB_NAME = 'anmeldungen.db'
 
 def init_db():
@@ -45,5 +44,9 @@ def submit():
         <a href="/">Zurück zur Startseite</a>
     """)
 
+@app.route('/')
+def home():
+    return "Backend läuft!"
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=10000)
